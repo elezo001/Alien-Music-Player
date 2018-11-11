@@ -5,10 +5,113 @@
  */
 package MusicPlayer.model;
 
+import java.time.LocalDateTime;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.scene.image.Image;
+
 /**
  *
  * @author elezo
  */
-public class Song {
+public final class Song implements Comparable<Song> {
+    
+    private SimpleStringProperty name;
+    private SimpleStringProperty artist;
+    private SimpleStringProperty album;
+    private SimpleStringProperty length;
+    
+    private int playCount;
+    
+    private SimpleBooleanProperty playing;
+    private String location;
+    
+    private int id;
+    
+    // Constructor for Song Class
+    
+    public Song(String name, String artist, String album, String length, String location, int id){
+        
+        this.name = new SimpleStringProperty(name);
+        this.artist = new SimpleStringProperty(artist);
+        this.id = id;
+        this.album = new SimpleStringProperty(album);
+        this.length = new SimpleStringProperty(length);
+        this.location = location;
+        
+        this.playCount = 0;
+        
+        
+        
+    }
+    
+        public int getId() {
+        return this.id;
+    }
+
+    public String getTitle() {
+        return this.name.get();
+    }
+
+    public StringProperty titleProperty() {
+        return this.name;
+    }
+
+    public String getArtist() {
+        return this.artist.get();
+    }
+
+    public StringProperty artistProperty() {
+        return this.artist;
+    }
+
+    public String getAlbum() {
+        return this.album.get();
+    }
+
+
+    public StringProperty albumProperty() {
+        return this.album;
+    }
+
+    public String getLength() {
+        return this.length.get();
+    }
+
+    public StringProperty lengthProperty() {
+        return this.length;
+    }
+
+    public int getPlayCount() {
+        return this.playCount;
+    }
+
+    public String getLocation() {
+        return this.location;
+    }
+
+    public BooleanProperty playingProperty() {
+        return this.playing;
+    }
+
+    public boolean getPlaying() {
+        return this.playing.get();
+    }
+
+    public void setPlaying(boolean playing) {
+        this.playing.set(playing);
+    }
+
+
+    
+    
+
+    @Override
+    public int compareTo(Song o) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }
