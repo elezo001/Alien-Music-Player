@@ -5,8 +5,11 @@
  */
 package MusicPlayer.view;
 
+import java.io.File;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -18,11 +21,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 /**
  * FXML Controller class
@@ -55,7 +61,9 @@ public class MusicPlayerController implements Initializable {
     @FXML private TextField searchBox;
     
     @FXML private Label dropped;
-    @FXML private ListView<String> songList;
+    @FXML private ListView<String> songList = new ListView<String>();
+    
+    private static MediaPlayer mediaPlayer;
     
     @FXML
     private void handleDragFileIntoBox(DragEvent e){
@@ -70,11 +78,40 @@ public class MusicPlayerController implements Initializable {
         Dragboard db = e.getDragboard();
         boolean success = false;
         if (db.hasFiles()){
-            songList.getItems().add(db.getFiles().toString());
+            String songAdded = db.getFiles().toString();
+            //deleting brackets from filePath.
+            songAdded = songAdded.substring(0, songAdded.length() - 1);
+            songAdded = songAdded.substring(1);
+            System.out.print(songAdded);
+            songList.getItems().add(songAdded);
             success = true;
         }
      e.setDropCompleted(success);
      e.consume();
+    }
+    
+    @FXML
+    private void handleSongClick(MouseEvent e){
+        // play song when clicked.
+        String songPath = songList.getSelectionModel().getSelectedItem();
+        String songFile = new File(songPath).toURI().toString();
+        try{
+            Media media = new Media(songFile);
+            mediaPlayer = new MediaPlayer(media);
+            mediaPlayer.play();
+        }
+        catch(Exception exception){
+            System.out.print(exception);
+        }
+        
+        
+        /*
+        String source = songList.getSelectionModel().getSelectedItem();
+        Media songPlaying = new Media(source);
+        MediaPlayer mediaPlayer = new MediaPlayer(songPlaying);
+        mediaPlayer.play();
+        */
+        
     }
 
 

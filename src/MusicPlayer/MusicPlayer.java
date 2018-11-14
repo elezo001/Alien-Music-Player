@@ -7,6 +7,7 @@ package MusicPlayer;
 
 import MusicPlayer.model.Song;
 import MusicPlayer.view.MusicPlayerController;
+import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Timer;
@@ -48,16 +49,16 @@ public class MusicPlayer extends Application {
             BorderPane view = mainLoader.load();
             
 
-            
-            new Thread(){
-                @Override
-                public void run(){
-                    final URL lookatmefile = getClass().getResource("/MusicPlayer/util/Music/01 Look At Me!.m4a");
-                    media = new Media(lookatmefile.toString());
-                    mediaPlayer = new MediaPlayer(media);
-                    mediaPlayer.play();
-                }
-            }.start();
+//            
+//            new Thread(){
+//                @Override
+//                public void run(){
+//                    final URL lookatmefile = getClass().getResource("/MusicPlayer/util/Music/01 Look At Me!.m4a");
+//                    media = new Media(lookatmefile.toString());
+//                    mediaPlayer = new MediaPlayer(media);
+//                    mediaPlayer.play();
+//                }
+//            }.start();
             
             
 
@@ -76,6 +77,20 @@ public class MusicPlayer extends Application {
         }
                
 }
+
+    private static void checkLibraryXML(){
+        /* function that checks if library exists
+        case: check if library was renamed
+        case: check if song was added from last start of application
+        case: check if library !exist, create file otherwise.
+        */
+        
+        File libraryXML = new File("MusicPlayer/util/resources/library.xml");
+        if (!libraryXML.exists()){
+            //createLibraryXML(); function to be created
+        }
+       
+    }
     
 public static void main(String[] args){
     launch(args);

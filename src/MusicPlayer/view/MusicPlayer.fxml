@@ -356,7 +356,7 @@
                <content>
                   <VBox fx:id="dragBox" onDragDropped="#handleFileDrop" onDragOver="#handleDragFileIntoBox" prefHeight="475.0" prefWidth="680.0">
                      <children>
-                        <ListView fx:id="songList" prefHeight="475.0" prefWidth="656.0" />
+                        <ListView fx:id="songList" onMouseClicked="#handleSongClick" prefHeight="475.0" prefWidth="656.0" />
                      </children></VBox>
                </content>
             </ScrollPane>
