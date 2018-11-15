@@ -8,6 +8,7 @@ package MusicPlayer.view;
 import java.io.File;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -78,12 +79,23 @@ public class MusicPlayerController implements Initializable {
         Dragboard db = e.getDragboard();
         boolean success = false;
         if (db.hasFiles()){
+            List<File> filesToAdd = db.getFiles();
+            for(int i=0; i < filesToAdd.size(); i++){
+                String songPath = filesToAdd.get(i).toString();
+                /*
+                songPath = songPath.substring(0, songPath.length() - 1);
+                songPath = songPath.substring(1);
+                */
+                songList.getItems().add(songPath);                    
+                }
+            /*
             String songAdded = db.getFiles().toString();
             //deleting brackets from filePath.
             songAdded = songAdded.substring(0, songAdded.length() - 1);
             songAdded = songAdded.substring(1);
             System.out.print(songAdded);
             songList.getItems().add(songAdded);
+            */
             success = true;
         }
      e.setDropCompleted(success);
