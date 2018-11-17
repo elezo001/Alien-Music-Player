@@ -53,7 +53,8 @@ public class MusicPlayer extends Application {
             FXMLLoader mainLoader = new FXMLLoader(getClass().getResource("/Musicplayer/View/MusicPlayer.FXML"));
             BorderPane view = mainLoader.load();
             
-
+            //initialize controller and give access to main application
+            mainController = mainLoader.getController();
 //            
 //            new Thread(){
 //                @Override
@@ -102,6 +103,10 @@ public class MusicPlayer extends Application {
         else {
             mediaPlayer.play();
         }
+    }
+    
+    public static MusicPlayerController getMainController(){
+        return mainController;
     }
 
     private static void checkLibraryXML(){

@@ -107,16 +107,7 @@ public class MusicPlayerController implements Initializable {
         }
         catch(Exception exception){
             System.out.print(exception);
-        }
-        
-        
-        /*
-        String source = songList.getSelectionModel().getSelectedItem();
-        Media songPlaying = new Media(source);
-        MediaPlayer mediaPlayer = new MediaPlayer(songPlaying);
-        mediaPlayer.play();
-        */
-        
+        }        
     }
     
     private boolean isSongPlaying(MediaPlayer mediaPlayer){
@@ -133,6 +124,8 @@ public class MusicPlayerController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
+        
         
         pauseButton.setOnMouseClicked( x -> {
             System.out.print("Pause button pressed");
