@@ -27,7 +27,7 @@ import javafx.stage.Stage;
 public class MusicPlayer extends Application {
     
     private static MusicPlayerController mainController;
-    private static MediaPlayer mediaPlayer;
+    public static MediaPlayer mediaPlayer;
     private static Media media;
     private static ArrayList<Song> nowPlayingList;
     private static int nowPlayingIndex;
@@ -40,8 +40,13 @@ public class MusicPlayer extends Application {
     private static boolean isMuted = false;
     private static Object draggedItem;
     
+    private static Stage stage;
+    
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage stage) throws Exception{
+        
+        MusicPlayer.stage = stage;
+        MusicPlayer.stage.setTitle("Alien Music Player");
         
         try {
             // Load main layout from fxml file.
@@ -64,10 +69,9 @@ public class MusicPlayer extends Application {
 
             // Shows the scene containing the layout.
             Scene scene = new Scene(view);
-            primaryStage.setTitle("Alien Music Player");
-            primaryStage.setScene(scene);
-            primaryStage.setMaximized(true);
-            primaryStage.show();
+            stage.setScene(scene);
+            stage.setMaximized(true);
+            stage.show();
 
         
         } 
@@ -77,6 +81,28 @@ public class MusicPlayer extends Application {
         }
                
 }
+    
+    public static boolean isPlaying() {
+        return mediaPlayer != null && MediaPlayer.Status.PLAYING.equals(mediaPlayer.getStatus());
+    }
+    
+    //Pauses current Song
+    public static void pause(){
+        if (isPlaying()){
+            mediaPlayer.pause();           
+        }
+    }
+
+    
+    // Plays/Pauses Current Song
+    public static void playPause(){
+        if (isPlaying()){
+            mediaPlayer.pause();
+        }
+        else {
+            mediaPlayer.play();
+        }
+    }
 
     private static void checkLibraryXML(){
         /* function that checks if library exists
@@ -93,6 +119,6 @@ public class MusicPlayer extends Application {
     }
     
 public static void main(String[] args){
-    launch(args);
+    Application.launch(MusicPlayer.class);
 }
 }

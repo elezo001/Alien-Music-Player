@@ -5,6 +5,7 @@
  */
 package MusicPlayer.view;
 
+import MusicPlayer.MusicPlayer;
 import java.io.File;
 import java.net.URL;
 import java.util.Arrays;
@@ -30,6 +31,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaPlayer.Status;
 
 /**
  * FXML Controller class
@@ -64,7 +66,7 @@ public class MusicPlayerController implements Initializable {
     @FXML private Label dropped;
     @FXML private ListView<String> songList = new ListView<String>();
     
-    private static MediaPlayer mediaPlayer;
+    
     
     @FXML
     private void handleDragFileIntoBox(DragEvent e){
@@ -82,20 +84,8 @@ public class MusicPlayerController implements Initializable {
             List<File> filesToAdd = db.getFiles();
             for(int i=0; i < filesToAdd.size(); i++){
                 String songPath = filesToAdd.get(i).toString();
-                /*
-                songPath = songPath.substring(0, songPath.length() - 1);
-                songPath = songPath.substring(1);
-                */
                 songList.getItems().add(songPath);                    
                 }
-            /*
-            String songAdded = db.getFiles().toString();
-            //deleting brackets from filePath.
-            songAdded = songAdded.substring(0, songAdded.length() - 1);
-            songAdded = songAdded.substring(1);
-            System.out.print(songAdded);
-            songList.getItems().add(songAdded);
-            */
             success = true;
         }
      e.setDropCompleted(success);
@@ -107,10 +97,13 @@ public class MusicPlayerController implements Initializable {
         // play song when clicked.
         String songPath = songList.getSelectionModel().getSelectedItem();
         String songFile = new File(songPath).toURI().toString();
+        if (MusicPlayer.isPlaying()){
+            MusicPlayer.mediaPlayer.stop();
+        }
         try{
             Media media = new Media(songFile);
-            mediaPlayer = new MediaPlayer(media);
-            mediaPlayer.play();
+            MusicPlayer.mediaPlayer = new MediaPlayer(media);
+            MusicPlayer.mediaPlayer.play();
         }
         catch(Exception exception){
             System.out.print(exception);
@@ -125,6 +118,14 @@ public class MusicPlayerController implements Initializable {
         */
         
     }
+    
+    private boolean isSongPlaying(MediaPlayer mediaPlayer){
+        Status status = mediaPlayer.getStatus();
+        if (status == Status.PLAYING){
+            return true;
+        }
+        return false;
+    }
 
 
     /**
@@ -133,7 +134,14 @@ public class MusicPlayerController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
+        pauseButton.setOnMouseClicked( x -> {
+            System.out.print("Pause button pressed");
+            MusicPlayer.pause();
+        });
         
+        playButton.setOnMouseClicked( x -> {
+            MusicPlayer.playPause();
+        });
     
     }    
     
