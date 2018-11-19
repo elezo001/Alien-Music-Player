@@ -8,10 +8,15 @@ package MusicPlayer.view;
 import MusicPlayer.MusicPlayer;
 import java.io.File;
 import java.net.URL;
+import java.nio.file.Paths;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableMap;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -32,6 +37,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaPlayer.Status;
+import org.jaudiotagger.audio.AudioFile;
+import org.jaudiotagger.audio.AudioFileIO;
+import org.jaudiotagger.audio.AudioHeader;
+import org.jaudiotagger.tag.FieldKey;
+import org.jaudiotagger.tag.Tag;
 
 /**
  * FXML Controller class
@@ -96,6 +106,7 @@ public class MusicPlayerController implements Initializable {
     private void handleSongClick(MouseEvent e){
         // play song when clicked.
         String songPath = songList.getSelectionModel().getSelectedItem();
+        File file = new File(songPath);
         String songFile = new File(songPath).toURI().toString();
         if (MusicPlayer.isPlaying()){
             MusicPlayer.mediaPlayer.stop();
@@ -104,19 +115,50 @@ public class MusicPlayerController implements Initializable {
             Media media = new Media(songFile);
             MusicPlayer.mediaPlayer = new MediaPlayer(media);
             MusicPlayer.mediaPlayer.play();
+            
+            showMetadata(songPath);
+            
         }
         catch(Exception exception){
             System.out.print(exception);
         }        
     }
     
-    private boolean isSongPlaying(MediaPlayer mediaPlayer){
-        Status status = mediaPlayer.getStatus();
-        if (status == Status.PLAYING){
-            return true;
+    
+    
+    private void showMetadata(String songPath){
+        File file = new File(songPath);
+        try{
+        AudioFile audioFile = AudioFileIO.read(file);
+        Tag tag = audioFile.getTag();
+        AudioHeader header = audioFile.getAudioHeader();
+        
+        String title = tag.getFirst(FieldKey.TITLE);
+        String artistTitle = tag.getFirst(FieldKey.ALBUM_ARTIST);
+        if (artistTitle.equals(null) || artistTitle.equals("") || artistTitle.equals("null")){
+            artistTitle = tag.getFirst(FieldKey.ARTIST);
         }
-        return false;
+        String artist = (artistTitle == null || artistTitle.equals("") || artistTitle.equals("null")) ? "" : artistTitle;
+        
+        String album = tag.getFirst(FieldKey.ALBUM);
+        
+        Duration length = Duration.ofSeconds((long) header.getTrackLength());
+        String track = tag.getFirst(FieldKey.TRACK);
+        String disc = tag.getFirst(FieldKey.DISC_NO);
+        
+        int playCount = 0;
+        String location = Paths.get(file.getAbsolutePath()).toString();
+        
+        System.out.print("Title: " + title + " Artist: " + artist + " Album: " + album + " Length: " + length + " Location: " + location);
+        
+        
+        }
+        catch(Exception ex){
+            ex.printStackTrace();
+        }
+        
     }
+
 
 
     /**

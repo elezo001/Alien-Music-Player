@@ -5,9 +5,9 @@
         <group>
             <file>file:/C:/Users/elezo/Documents/NetBeansProjects/MusicPlayer/src/MusicPlayer/MusicPlayer.java</file>
             <file>file:/C:/Users/elezo/Documents/NetBeansProjects/MusicPlayer/src/MusicPlayer/model/Song.java</file>
-            <file>file:/C:/Users/elezo/Documents/NetBeansProjects/MusicPlayer/src/MusicPlayer/view/MusicPlayer.fxml</file>
             <file>file:/C:/Users/elezo/Documents/NetBeansProjects/MusicPlayer/src/MusicPlayer/view/MusicPlayerController.java</file>
             <file>file:/C:/Users/elezo/Documents/NetBeansProjects/MusicPlayer/src/MusicPlayer/model/Library.java</file>
+            <file>file:/C:/Users/elezo/Documents/NetBeansProjects/MusicPlayer/src/MusicPlayer/model/Playlist.java</file>
         </group>
     </open-files>
 </project-private>
