@@ -8,45 +8,153 @@ package MusicPlayer.util;
 import MusicPlayer.model.Song;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathFactory;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.audio.AudioHeader;
 import org.jaudiotagger.audio.exceptions.CannotReadException;
 import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
 import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
+import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.Tag;
 import org.jaudiotagger.tag.TagException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  *
  * @author elezo
  */
 public class XMLEditor {
+    private static String musicDirectoryPath;
+    
+    int currentSongId = 0;
     
     private static ArrayList<Song> songsToAdd = new ArrayList<>();
     private static ArrayList<File> songFilesToAdd = new ArrayList(); 
     private static ArrayList<String> xmlSongFileNames = new ArrayList<>();
     
+    public static ArrayList<Song> getSongsToAdd(){
+        return songsToAdd;
+    }
+    
+    public static ArrayList<File> getSongFilesToAdd(){
+        return songFilesToAdd;
+    }
     
     private static void addSongToXml(){
-        
+        //Fills songsToAddArray; 
         createSongObject();
+        
+        try {
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+            Document doc = docBuilder.parse("/MusicPlayer/util/resources/library.xml");
+            
+            XPathFactory xPathfactory = XPathFactory.newInstance();
+            XPath xpath = xPathfactory.newXPath();
+            XPathExpression expr = xpath.compile("/library/songs");
+            Node songsNode = ((NodeList) expr.evaluate(doc, XPathConstants.NODESET)).item(0);
+            
+            for (Song song : songsToAdd) {
+                Element newSong = doc.createElement("song");
+                Element newSongId = doc.createElement("id");
+                Element newSongTitle = doc.createElement("title");
+                Element newSongArtist = doc.createElement("artist");
+                Element newSongAlbum = doc.createElement("album");
+                Element newSongLength = doc.createElement("length");
+                Element newSongTrackNumber = doc.createElement("trackNumber");
+                Element newSongDiscNumber = doc.createElement("discNumber");
+                Element newSongPlayCount = doc.createElement("playCount");
+                Element newSongLocation = doc.createElement("location");
+            
+                newSongId.setTextContent(Integer.toString(song.getId()));
+                newSongTitle.setTextContent(song.getTitle());
+                newSongArtist.setTextContent(song.getArtist());
+                newSongAlbum.setTextContent(song.getAlbum());
+                newSongLength.setTextContent(song.getLength());
+                newSongPlayCount.setTextContent(Integer.toString(song.getPlayCount()));
+                newSongLocation.setTextContent(song.getLocation());
+                
+                songsNode.appendChild(newSong);
+                newSong.appendChild(newSongId);
+                newSong.appendChild(newSongTitle);
+                newSong.appendChild(newSongArtist);
+                newSong.appendChild(newSongAlbum);
+                newSong.appendChild(newSongLength);
+                newSong.appendChild(newSongTrackNumber);
+                newSong.appendChild(newSongDiscNumber);
+                newSong.appendChild(newSongPlayCount);
+                newSong.appendChild(newSongLocation);
+            
+        }
+            
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            DOMSource source = new DOMSource(doc);
+            File xmlFile = new File("/MusicPlayer/util/resources/library.xml");
+            StreamResult result = new StreamResult(xmlFile);
+            transformer.transform(source, result);
+                
+        }
+            
+        
+        catch (Exception ex) {
+			ex.printStackTrace();
+	}
         
     }
     
     private static void createSongObject() {
         
+        int id = 0;
+        
         for(File songFile : songFilesToAdd){
-            try{
-                AudioFile audioFile = AudioFileIO.read(songFile);
-                Tag tag = audioFile.getTag();
-                AudioHeader header = audioFile.getAudioHeader();
-                
-            }
-                
+        try{
+        AudioFile audioFile = AudioFileIO.read(songFile);
+        Tag tag = audioFile.getTag();
+        AudioHeader header = audioFile.getAudioHeader();
+        
+        String title = tag.getFirst(FieldKey.TITLE);
+        String artistTitle = tag.getFirst(FieldKey.ALBUM_ARTIST);
+        if (artistTitle.equals(null) || artistTitle.equals("") || artistTitle.equals("null")){
+            artistTitle = tag.getFirst(FieldKey.ARTIST);
+        }
+        String artist = (artistTitle == null || artistTitle.equals("") || artistTitle.equals("null")) ? "" : artistTitle;
+        
+        String album = tag.getFirst(FieldKey.ALBUM);
+        
+        Duration length = Duration.ofSeconds((long) header.getTrackLength());
+        String track = tag.getFirst(FieldKey.TRACK);
+        String disc = tag.getFirst(FieldKey.DISC_NO);
+        
+        int playCount = 0;
+        String location = Paths.get(songFile.getAbsolutePath()).toString();
+        
+        Song songToAdd = new Song(title, artist, album, length.toString(), location, id);
+        songsToAdd.add(songToAdd);
+        
+        
+        }        
             catch (Exception ex){
                 ex.printStackTrace();
             }

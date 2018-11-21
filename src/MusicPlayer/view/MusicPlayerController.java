@@ -170,7 +170,6 @@ public class MusicPlayerController implements Initializable {
         
         
         pauseButton.setOnMouseClicked( x -> {
-            System.out.print("Pause button pressed");
             MusicPlayer.pause();
         });
         

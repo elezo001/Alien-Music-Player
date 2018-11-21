@@ -8,9 +8,12 @@ package MusicPlayer;
 import MusicPlayer.model.Song;
 import MusicPlayer.view.MusicPlayerController;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Timer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -19,6 +22,17 @@ import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 /**
  *
@@ -47,6 +61,7 @@ public class MusicPlayer extends Application {
         
         MusicPlayer.stage = stage;
         MusicPlayer.stage.setTitle("Alien Music Player");
+        checkLibraryXML();
         
         try {
             // Load main layout from fxml file.
@@ -109,16 +124,48 @@ public class MusicPlayer extends Application {
         return mainController;
     }
 
-    private static void checkLibraryXML(){
+    private static void checkLibraryXML() throws IOException{
         /* function that checks if library exists
         case: check if library was renamed
         case: check if song was added from last start of application
         case: check if library !exist, create file otherwise.
         */
         
-        File libraryXML = new File("MusicPlayer/util/resources/library.xml");
-        if (!libraryXML.exists()){
-            //createLibraryXML(); function to be created
+        File libraryXML = new File("C:/Users/elezo/Documents/NetBeansProjects/MusicPlayer/src/MusicPlayer/util/resources/library.xml");
+        
+
+        if (libraryXML.exists()){
+            System.out.print("library exists");
+            //check to see if we need to add a song to XMl from last run
+           
+        }
+        else{
+            System.out.print("library does not exist, creating xml");
+            try{
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+            Document doc = docBuilder.newDocument();
+            
+            Element rootElement= doc.createElement("library");
+            doc.appendChild(rootElement);
+            Element musicLibrary = doc.createElement("musicLibrary");
+            rootElement.appendChild(musicLibrary);
+            Element songs = doc.createElement("songs");
+            rootElement.appendChild(songs);
+            Element playlists = doc.createElement("playlists");
+            rootElement.appendChild(playlists);
+            
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            DOMSource source = new DOMSource(doc);
+            StreamResult result = new StreamResult(libraryXML);
+            transformer.transform(source, result);
+            
+            } catch (ParserConfigurationException ex) {
+                ex.printStackTrace();
+            } catch (TransformerException ex) {
+                ex.printStackTrace();
+            }
         }
        
     }
