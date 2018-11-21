@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
@@ -48,7 +49,7 @@ public class XMLEditor {
     int currentSongId = 0;
     
     private static ArrayList<Song> songsToAdd = new ArrayList<>();
-    private static ArrayList<File> songFilesToAdd = new ArrayList(); 
+    private static ArrayList<File> songFilesToAdd = new ArrayList();
     private static ArrayList<String> xmlSongFileNames = new ArrayList<>();
     
     public static ArrayList<Song> getSongsToAdd(){
@@ -59,14 +60,18 @@ public class XMLEditor {
         return songFilesToAdd;
     }
     
-    private static void addSongToXml(){
+    public static void setFilesToAdd(List<File> fileList){
+        songFilesToAdd = (ArrayList<File>) fileList;
+    }
+    
+    public static void addSongToXml(){
         //Fills songsToAddArray; 
         createSongObject();
         
         try {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-            Document doc = docBuilder.parse("/MusicPlayer/util/resources/library.xml");
+            Document doc = docBuilder.parse("C:/Users/elezo/Documents/NetBeansProjects/MusicPlayer/src/MusicPlayer/util/resources/library.xml");
             
             XPathFactory xPathfactory = XPathFactory.newInstance();
             XPath xpath = xPathfactory.newXPath();
@@ -111,7 +116,7 @@ public class XMLEditor {
             transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             DOMSource source = new DOMSource(doc);
-            File xmlFile = new File("/MusicPlayer/util/resources/library.xml");
+            File xmlFile = new File("C:/Users/elezo/Documents/NetBeansProjects/MusicPlayer/src/MusicPlayer/util/resources/library.xml");
             StreamResult result = new StreamResult(xmlFile);
             transformer.transform(source, result);
                 

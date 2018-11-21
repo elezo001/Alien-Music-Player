@@ -6,6 +6,7 @@
 package MusicPlayer.view;
 
 import MusicPlayer.MusicPlayer;
+import MusicPlayer.util.XMLEditor;
 import java.io.File;
 import java.net.URL;
 import java.nio.file.Paths;
@@ -92,6 +93,8 @@ public class MusicPlayerController implements Initializable {
         boolean success = false;
         if (db.hasFiles()){
             List<File> filesToAdd = db.getFiles();
+            XMLEditor.setFilesToAdd(filesToAdd);
+            XMLEditor.addSongToXml();
             for(int i=0; i < filesToAdd.size(); i++){
                 String songPath = filesToAdd.get(i).toString();
                 songList.getItems().add(songPath);                    
