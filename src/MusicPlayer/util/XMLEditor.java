@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
@@ -48,9 +50,14 @@ public class XMLEditor {
     
     int currentSongId = 0;
     
+    
     private static ArrayList<Song> songsToAdd = new ArrayList<>();
     private static ArrayList<File> songFilesToAdd = new ArrayList();
     private static ArrayList<String> xmlSongFileNames = new ArrayList<>();
+    
+    public static ObservableList<Song> getObservableSongs() {
+        return FXCollections.observableArrayList(songsToAdd);
+    }
     
     public static ArrayList<Song> getSongsToAdd(){
         return songsToAdd;

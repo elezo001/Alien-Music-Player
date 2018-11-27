@@ -19,7 +19,7 @@ import javafx.scene.image.Image;
  */
 public final class Song implements Comparable<Song> {
     
-    private SimpleStringProperty name;
+    private SimpleStringProperty title;
     private SimpleStringProperty artist;
     private SimpleStringProperty album;
     private SimpleStringProperty length;
@@ -33,9 +33,9 @@ public final class Song implements Comparable<Song> {
     
     // Constructor for Song Class
     
-    public Song(String name, String artist, String album, String length, String location, int id){
+    public Song(String title, String artist, String album, String length, String location, int id){
         
-        this.name = new SimpleStringProperty(name);
+        this.title = new SimpleStringProperty(title);
         this.artist = new SimpleStringProperty(artist);
         this.id = id;
         this.album = new SimpleStringProperty(album);
@@ -53,11 +53,11 @@ public final class Song implements Comparable<Song> {
     }
 
     public String getTitle() {
-        return this.name.get();
+        return this.title.get();
     }
 
     public StringProperty titleProperty() {
-        return this.name;
+        return this.title;
     }
 
     public String getArtist() {

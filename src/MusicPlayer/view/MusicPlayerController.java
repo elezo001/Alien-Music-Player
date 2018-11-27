@@ -6,6 +6,7 @@
 package MusicPlayer.view;
 
 import MusicPlayer.MusicPlayer;
+import MusicPlayer.model.Song;
 import MusicPlayer.util.XMLEditor;
 import java.io.File;
 import java.net.URL;
@@ -18,18 +19,25 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.Separator;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
@@ -77,7 +85,12 @@ public class MusicPlayerController implements Initializable {
     
     @FXML private Label dropped;
     @FXML private ListView<String> songList = new ListView<String>();
-    
+    @FXML private TableView<Song> songView = new TableView<Song>();
+    @FXML private TableColumn<Song, String> titleColumn;
+    @FXML private TableColumn<Song, String> artistColumn;
+    @FXML private TableColumn<Song, String> albumColumn;
+    @FXML private TableColumn<Song, String> lengthColumn;
+    @FXML private TableColumn<Song, String> playcountColumn;
     
     
     @FXML
@@ -106,9 +119,10 @@ public class MusicPlayerController implements Initializable {
             List<File> filesToAdd = db.getFiles();
             XMLEditor.setFilesToAdd(filesToAdd);
             XMLEditor.addSongToXml();
-            for(int i=0; i < filesToAdd.size(); i++){
-                String songPath = filesToAdd.get(i).toString();
-                songList.getItems().add(songPath);                    
+            ObservableList<Song> list = XMLEditor.getObservableSongs();
+            for(int i=0; i < list.size(); i++){
+                Song song = list.get(i);
+                songView.getItems().add(song);
                 }
             success = true;
         }
@@ -116,17 +130,19 @@ public class MusicPlayerController implements Initializable {
      e.consume();
     }
     
+    /*
     @FXML
     private void handleSongClick(MouseEvent e){
         // play song when clicked.
-        String songPath = songList.getSelectionModel().getSelectedItem();
-        File file = new File(songPath);
-        String songFile = new File(songPath).toURI().toString();
+        Song song = songView.getSelectionModel().getSelectedItem();
+        String songPath = song.getLocation();
+        showMetadata(songPath);
+        //String songFile = new File(songPath).toURI().toString();
         if (MusicPlayer.isPlaying()){
             MusicPlayer.mediaPlayer.stop();
         }
         try{
-            Media media = new Media(songFile);
+            Media media = new Media(songPath);
             MusicPlayer.mediaPlayer = new MediaPlayer(media);
             MusicPlayer.mediaPlayer.play();
             
@@ -137,7 +153,7 @@ public class MusicPlayerController implements Initializable {
             System.out.print(exception);
         }        
     }
-    
+    */
     
     
     private void showMetadata(String songPath){
@@ -181,7 +197,36 @@ public class MusicPlayerController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         addSongsFromXML();
+        songView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        titleColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("title"));
+        artistColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("artist"));
+        albumColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("album"));
+        lengthColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("length"));
         
+        songView.setRowFactory(x -> {
+            TableRow<Song> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+             if (! row.isEmpty() && event.getButton()==MouseButton.PRIMARY 
+             && event.getClickCount() == 2){
+                 
+                 Song song = row.getItem();
+                 String songFile = new File(song.getLocation()).toURI().toString();
+                 
+             if (MusicPlayer.isPlaying()){
+                MusicPlayer.mediaPlayer.stop();
+            }
+            try{
+                Media media = new Media(songFile);
+                MusicPlayer.mediaPlayer = new MediaPlayer(media);
+                MusicPlayer.mediaPlayer.play();            
+            }
+            catch(Exception exception){
+                System.out.print(exception);
+            }
+            } 
+            });
+            return row;
+        });
         
         pauseButton.setOnMouseClicked( x -> {
             MusicPlayer.pause();
