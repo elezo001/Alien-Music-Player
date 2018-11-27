@@ -13,6 +13,17 @@
             <playCount>0</playCount>
             <location>C:\Users\elezo\Music\01 Look At Me!.m4a</location>
         </song>
+        <song>
+            <id>0</id>
+            <title/>
+            <artist/>
+            <album/>
+            <length>PT1M29S</length>
+            <trackNumber/>
+            <discNumber/>
+            <playCount>0</playCount>
+            <location>C:\Users\elezo\Music\LUCKI - DONT YOU LOVE ME.mp3</location>
+        </song>
     </songs>
     <playlists/>
 </library>

@@ -31,4 +31,35 @@ public class Library {
     private static int maxProgress;
     
     
+    public void addSongToLibrary(Song song){
+        songs.add(song);
+    }
+    
+    public void addArtistToLibrary(Artist artist){
+        artists.add(artist);
+    }
+    
+    public void addAlbumToLibrary(Album album){
+        albums.add(album);
+    }
+    
+    public void addPlaylistToLibrary(Playlist playlist){
+        playlists.add(playlist);
+    }
+    
+    public ArrayList<Song> getSongs(){
+        return this.songs;
+    }
+    
+    public ArrayList<Album> getAlbums(){
+        return this.albums;
+    }
+    
+    public ArrayList<Playlist> getPlaylists(){
+        return this.playlists;
+    }
+    
+    public ArrayList<Artist> getArtists(){
+        return this.artists;
+    }
 }

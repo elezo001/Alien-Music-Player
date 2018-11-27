@@ -33,6 +33,8 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  *
@@ -123,6 +125,7 @@ public class MusicPlayer extends Application {
     public static MusicPlayerController getMainController(){
         return mainController;
     }
+    
 
     private static void checkLibraryXML() throws IOException{
         /* function that checks if library exists

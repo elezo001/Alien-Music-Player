@@ -56,12 +56,45 @@ public class XMLEditor {
         return songsToAdd;
     }
     
+    public static ArrayList<String> getXmlFileNames(){
+        return xmlSongFileNames;
+    }
+    
     public static ArrayList<File> getSongFilesToAdd(){
         return songFilesToAdd;
     }
     
     public static void setFilesToAdd(List<File> fileList){
         songFilesToAdd = (ArrayList<File>) fileList;
+    }
+    
+    public static void addOnStartup(){
+        try{
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+            Document doc = docBuilder.parse("C:/Users/elezo/Documents/NetBeansProjects/MusicPlayer/src/MusicPlayer/util/resources/library.xml");
+            
+            NodeList nodeList = doc.getElementsByTagName("song");
+            for(int i=0; i < nodeList.getLength(); i++){
+                Node songNode = nodeList.item(i);
+                if(songNode.getNodeType() == Node.ELEMENT_NODE){
+                    Element element = (Element) songNode;
+                    String songPath = getTagValue("location", element);
+                    xmlSongFileNames.add(songPath);   
+                }
+            }
+        
+            
+        }   
+            catch (Exception ex){
+                    ex.printStackTrace();
+            }
+    }
+    
+    private static String getTagValue(String tag, Element element){
+        NodeList nodeList = element.getElementsByTagName(tag).item(0).getChildNodes();
+        Node value = (Node) nodeList.item(0);
+        return value.getNodeValue();
     }
     
     public static void addSongToXml(){

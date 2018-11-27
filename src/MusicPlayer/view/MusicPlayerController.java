@@ -11,6 +11,7 @@ import java.io.File;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -86,6 +87,16 @@ public class MusicPlayerController implements Initializable {
         }
         e.consume();
         }
+    
+    @FXML
+    private void addSongsFromXML(){
+        XMLEditor.addOnStartup();
+        ArrayList<String> fileStrings = XMLEditor.getXmlFileNames();
+        for(int i=0; i<fileStrings.size(); i++){
+            String songPath = fileStrings.get(i);
+            songList.getItems().add(songPath);           
+        }
+    }
     
     @FXML
     private void handleFileDrop(DragEvent e){
@@ -169,7 +180,7 @@ public class MusicPlayerController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+        addSongsFromXML();
         
         
         pauseButton.setOnMouseClicked( x -> {
