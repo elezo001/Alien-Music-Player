@@ -11,13 +11,14 @@ import MusicPlayer.util.XMLEditor;
 import java.io.File;
 import java.net.URL;
 import java.nio.file.Paths;
-import java.time.Duration;
+import javafx.util.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -70,7 +71,7 @@ public class MusicPlayerController implements Initializable {
     @FXML private ImageView nowPlayingArtwork;
     @FXML private Label nowPlayingTitle;
     @FXML private Label nowPlayingArtist;
-    @FXML private Slider timeSlider;
+    @FXML public Slider timeSlider;
     @FXML private Region frontSliderTrack;    
     @FXML private Label timePassed;
     @FXML private Label timeRemaining;
@@ -168,7 +169,7 @@ public class MusicPlayerController implements Initializable {
     }
     */
     
-    
+    /*
     private void showMetadata(String songPath){
         File file = new File(songPath);
         try{
@@ -201,6 +202,9 @@ public class MusicPlayerController implements Initializable {
         }
         
     }
+    */
+    
+
 
 
 
@@ -229,7 +233,7 @@ public class MusicPlayerController implements Initializable {
                 }
             }
         );
-        
+            
         
         timeSlider.valueProperty().addListener(new ChangeListener() {
             
@@ -256,7 +260,15 @@ public class MusicPlayerController implements Initializable {
             try{
                 Media media = new Media(songFile);
                 MusicPlayer.mediaPlayer = new MediaPlayer(media);
-                MusicPlayer.mediaPlayer.play(); 
+                MusicPlayer.mediaPlayer.play();
+                //timeSlider.setMax(MusicPlayer.mediaPlayer.getTotalDuration().toSeconds());
+                MusicPlayer.mediaPlayer.currentTimeProperty().addListener(new ChangeListener<Duration>() {
+                    @Override
+                    public void changed(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue) {
+                        double duration = MusicPlayer.mediaPlayer.getTotalDuration().toSeconds();
+                        timeSlider.setValue((newValue.toSeconds() / duration) * 100.0);
+                    }   
+                });
                 //timeSlider.setMax((double) MusicPlayer.mediaPlayer.getTotalDuration().toSeconds());
             }
             catch(Exception exception){

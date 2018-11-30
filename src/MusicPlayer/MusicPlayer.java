@@ -15,6 +15,9 @@ import java.util.Timer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -65,8 +68,7 @@ public class MusicPlayer extends Application {
         MusicPlayer.stage = stage;
         MusicPlayer.stage.setTitle("Alien Music Player");
         checkLibraryXML();
-        
-        
+                        
         try {
             // Load main layout from fxml file.
             FXMLLoader mainLoader = new FXMLLoader(getClass().getResource("/Musicplayer/View/MusicPlayer.FXML"));
@@ -123,6 +125,18 @@ public class MusicPlayer extends Application {
             mediaPlayer.play();
         }
     }
+    
+    protected static void updateValues(){
+        Platform.runLater(new Runnable(){
+            public void run(){
+                double currentTime = MusicPlayer.mediaPlayer.getCurrentTime().toSeconds();
+                double duration = MusicPlayer.mediaPlayer.getTotalDuration().toSeconds();
+                getMainController().timeSlider.setValue((currentTime / duration) * 100.0);                
+            }
+        });
+    }
+    
+    
     
     public static void seek(double seconds) {
         if (mediaPlayer != null) {
