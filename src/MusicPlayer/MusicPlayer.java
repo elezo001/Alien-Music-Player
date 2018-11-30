@@ -22,6 +22,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -64,6 +65,7 @@ public class MusicPlayer extends Application {
         MusicPlayer.stage = stage;
         MusicPlayer.stage.setTitle("Alien Music Player");
         checkLibraryXML();
+        
         
         try {
             // Load main layout from fxml file.
@@ -119,6 +121,13 @@ public class MusicPlayer extends Application {
         }
         else {
             mediaPlayer.play();
+        }
+    }
+    
+    public static void seek(double seconds) {
+        if (mediaPlayer != null) {
+            mediaPlayer.seek(new Duration(seconds * 1000));
+            timerCounter = (int) seconds * 4;
         }
     }
     

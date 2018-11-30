@@ -5,6 +5,7 @@
  */
 package MusicPlayer.util;
 
+import MusicPlayer.model.Library;
 import MusicPlayer.model.Song;
 import java.io.File;
 import java.io.IOException;
@@ -48,6 +49,10 @@ import org.w3c.dom.NodeList;
 public class XMLEditor {
     private static String musicDirectoryPath;
     
+    public static String UNKNOWN_SONG = "Unknown Song";
+    public static String UNKNOWN_ARTIST = "Unknown Artist";
+    public static String UNKNOWN_ALBUM = "Unknown Album";
+    
     int currentSongId = 0;
     
     
@@ -69,6 +74,10 @@ public class XMLEditor {
     
     public static ArrayList<File> getSongFilesToAdd(){
         return songFilesToAdd;
+    }
+    
+    public static void clearSongsToAdd(){
+        songsToAdd.clear();
     }
     
     public static void setFilesToAdd(List<File> fileList){
@@ -169,7 +178,7 @@ public class XMLEditor {
         
     }
     
-    private static void createSongObject() {
+    public static void createSongObject() {
         
         int id = 0;
         
@@ -180,23 +189,44 @@ public class XMLEditor {
         AudioHeader header = audioFile.getAudioHeader();
         
         String title = tag.getFirst(FieldKey.TITLE);
+        if (title.equals(null) || title.equals("") || title.equals("null")){
+            title = UNKNOWN_SONG;
+        }
+           
+        
         String artistTitle = tag.getFirst(FieldKey.ALBUM_ARTIST);
         if (artistTitle.equals(null) || artistTitle.equals("") || artistTitle.equals("null")){
             artistTitle = tag.getFirst(FieldKey.ARTIST);
         }
+        if (artistTitle.equals(null) || artistTitle.equals("") || artistTitle.equals("null")){
+            artistTitle = UNKNOWN_ARTIST;
+        }
+                
         String artist = (artistTitle == null || artistTitle.equals("") || artistTitle.equals("null")) ? "" : artistTitle;
         
         String album = tag.getFirst(FieldKey.ALBUM);
+        if (album.equals(null) || album.equals("") || album.equals("null")){
+            album = UNKNOWN_ALBUM;
+        }
+             
         
         Duration length = Duration.ofSeconds((long) header.getTrackLength());
+        long lengthSeconds = length.getSeconds();
+        long lengthMinutes = length.toMinutes();
+        String songLength = Long.toString(lengthMinutes) + ": " + Long.toString(lengthSeconds);
+        
+        
+        System.out.print(length.toString());
+        
         String track = tag.getFirst(FieldKey.TRACK);
         String disc = tag.getFirst(FieldKey.DISC_NO);
         
         int playCount = 0;
         String location = Paths.get(songFile.getAbsolutePath()).toString();
         
-        Song songToAdd = new Song(title, artist, album, length.toString(), location, id);
+        Song songToAdd = new Song(title, artist, album, songLength, location, id);
         songsToAdd.add(songToAdd);
+        
         
         
         }        

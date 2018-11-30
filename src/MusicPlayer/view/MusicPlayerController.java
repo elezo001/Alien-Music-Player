@@ -18,6 +18,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
+import javafx.beans.binding.Bindings;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
@@ -105,9 +108,18 @@ public class MusicPlayerController implements Initializable {
     private void addSongsFromXML(){
         XMLEditor.addOnStartup();
         ArrayList<String> fileStrings = XMLEditor.getXmlFileNames();
+        List<File> songFileList = new ArrayList<File>();
+        for (int i=0; i < fileStrings.size(); i++){
+            File songFile = new File(fileStrings.get(i));
+            songFileList.add(songFile);
+        }
+            XMLEditor.setFilesToAdd(songFileList);
+            XMLEditor.createSongObject();
+            ObservableList<Song> list = XMLEditor.getObservableSongs();
+            XMLEditor.clearSongsToAdd();
         for(int i=0; i<fileStrings.size(); i++){
-            String songPath = fileStrings.get(i);
-            songList.getItems().add(songPath);           
+            Song song = list.get(i);
+            songView.getItems().add(song);
         }
     }
     
@@ -120,6 +132,7 @@ public class MusicPlayerController implements Initializable {
             XMLEditor.setFilesToAdd(filesToAdd);
             XMLEditor.addSongToXml();
             ObservableList<Song> list = XMLEditor.getObservableSongs();
+            XMLEditor.clearSongsToAdd();
             for(int i=0; i < list.size(); i++){
                 Song song = list.get(i);
                 songView.getItems().add(song);
@@ -197,11 +210,36 @@ public class MusicPlayerController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         addSongsFromXML();
+        
         songView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         titleColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("title"));
         artistColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("artist"));
         albumColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("album"));
         lengthColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("length"));
+        
+        timeSlider.valueChangingProperty().addListener(
+            (slider, wasChanging, isChanging) -> {
+
+                if (wasChanging) {
+                    
+                    double duration = MusicPlayer.mediaPlayer.getTotalDuration().toSeconds();
+                    double percentage = timeSlider.getValue() / 100.0;
+                    double seconds = percentage * duration;
+                    MusicPlayer.seek(seconds);
+                }
+            }
+        );
+        
+        
+        timeSlider.valueProperty().addListener(new ChangeListener() {
+            
+            @Override
+            public void changed(ObservableValue arg0, Object arg1, Object arg2){
+                nowPlayingTitle.setText(Double.toString(MusicPlayer.mediaPlayer.getTotalDuration().toSeconds()));
+                nowPlayingArtist.setText(Double.toString(timeSlider.getValue()));
+            }
+        });
+                                                     
         
         songView.setRowFactory(x -> {
             TableRow<Song> row = new TableRow<>();
@@ -218,7 +256,8 @@ public class MusicPlayerController implements Initializable {
             try{
                 Media media = new Media(songFile);
                 MusicPlayer.mediaPlayer = new MediaPlayer(media);
-                MusicPlayer.mediaPlayer.play();            
+                MusicPlayer.mediaPlayer.play(); 
+                //timeSlider.setMax((double) MusicPlayer.mediaPlayer.getTotalDuration().toSeconds());
             }
             catch(Exception exception){
                 System.out.print(exception);

@@ -7,18 +7,7 @@
             <title>Look At Me!</title>
             <artist>XXXTENTACION</artist>
             <album>Look At Me! - Single</album>
-            <length>PT2M6S</length>
-            <trackNumber/>
-            <discNumber/>
-            <playCount>0</playCount>
-            <location>C:\Users\elezo\Music\01 Look At Me!.m4a</location>
-        </song>
-    <song>
-            <id>0</id>
-            <title>Look At Me!</title>
-            <artist>XXXTENTACION</artist>
-            <album>Look At Me! - Single</album>
-            <length>PT2M6S</length>
+            <length>2: 126</length>
             <trackNumber/>
             <discNumber/>
             <playCount>0</playCount>
@@ -26,10 +15,10 @@
         </song>
         <song>
             <id>0</id>
-            <title/>
-            <artist/>
-            <album/>
-            <length>PT1M29S</length>
+            <title>Unknown Song</title>
+            <artist>Unknown Artist</artist>
+            <album>Unknown Album</album>
+            <length>1: 89</length>
             <trackNumber/>
             <discNumber/>
             <playCount>0</playCount>
