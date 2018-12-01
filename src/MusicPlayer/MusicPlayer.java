@@ -92,7 +92,7 @@ public class MusicPlayer extends Application {
             // Shows the scene containing the layout.
             Scene scene = new Scene(view);
             stage.setScene(scene);
-            stage.setMaximized(true);
+            //stage.setMaximized(true);
             stage.show();
 
         
@@ -122,7 +122,7 @@ public class MusicPlayer extends Application {
             mediaPlayer.pause();
         }
         else {
-            mediaPlayer.play();
+            mediaPlayer.play();                          
         }
     }
     

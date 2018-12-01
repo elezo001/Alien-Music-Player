@@ -145,29 +145,12 @@ public class MusicPlayerController implements Initializable {
     }
     
     /*
-    @FXML
-    private void handleSongClick(MouseEvent e){
-        // play song when clicked.
-        Song song = songView.getSelectionModel().getSelectedItem();
-        String songPath = song.getLocation();
-        showMetadata(songPath);
-        //String songFile = new File(songPath).toURI().toString();
-        if (MusicPlayer.isPlaying()){
-            MusicPlayer.mediaPlayer.stop();
-        }
-        try{
-            Media media = new Media(songPath);
-            MusicPlayer.mediaPlayer = new MediaPlayer(media);
-            MusicPlayer.mediaPlayer.play();
-            
-            showMetadata(songPath);
-            
-        }
-        catch(Exception exception){
-            System.out.print(exception);
-        }        
+    @FXML 
+    private void pauseOnSliderDrag(){
+        MusicPlayer.pause();
     }
     */
+    
     
     /*
     private void showMetadata(String songPath){
@@ -221,30 +204,20 @@ public class MusicPlayerController implements Initializable {
         albumColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("album"));
         lengthColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("length"));
         
-        timeSlider.valueChangingProperty().addListener(
-            (slider, wasChanging, isChanging) -> {
-
-                if (wasChanging) {
-                    
+        timeSlider.valueChangingProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> obs, Boolean wasChanging, Boolean isChanging){
+                if (wasChanging){
                     double duration = MusicPlayer.mediaPlayer.getTotalDuration().toSeconds();
-                    double percentage = timeSlider.getValue() / 100.0;
-                    double seconds = percentage * duration;
-                    MusicPlayer.seek(seconds);
+                    double sliderValue = timeSlider.getValue() / 100;
+                    double seekTo = (duration * sliderValue);
+                    MusicPlayer.mediaPlayer.seek(Duration.seconds(seekTo));
+                    
+                    
                 }
             }
-        );
-            
-        
-        timeSlider.valueProperty().addListener(new ChangeListener() {
-            
-            @Override
-            public void changed(ObservableValue arg0, Object arg1, Object arg2){
-                nowPlayingTitle.setText(Double.toString(MusicPlayer.mediaPlayer.getTotalDuration().toSeconds()));
-                nowPlayingArtist.setText(Double.toString(timeSlider.getValue()));
-            }
         });
-                                                     
-        
+
         songView.setRowFactory(x -> {
             TableRow<Song> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
@@ -261,20 +234,22 @@ public class MusicPlayerController implements Initializable {
                 Media media = new Media(songFile);
                 MusicPlayer.mediaPlayer = new MediaPlayer(media);
                 MusicPlayer.mediaPlayer.play();
-                //timeSlider.setMax(MusicPlayer.mediaPlayer.getTotalDuration().toSeconds());
+            
+                //add listener for slider timer
                 MusicPlayer.mediaPlayer.currentTimeProperty().addListener(new ChangeListener<Duration>() {
                     @Override
                     public void changed(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue) {
                         double duration = MusicPlayer.mediaPlayer.getTotalDuration().toSeconds();
                         timeSlider.setValue((newValue.toSeconds() / duration) * 100.0);
+                        
+                        nowPlayingTitle.setText(Double.toString(timeSlider.getValue()));
                     }   
                 });
-                //timeSlider.setMax((double) MusicPlayer.mediaPlayer.getTotalDuration().toSeconds());
+                
             }
             catch(Exception exception){
                 System.out.print(exception);
-            }
-            } 
+            }} 
             });
             return row;
         });
