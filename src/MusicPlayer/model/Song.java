@@ -5,6 +5,8 @@
  */
 package MusicPlayer.model;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
@@ -12,6 +14,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.image.Image;
+import javafx.util.Duration;
 
 /**
  *
@@ -34,6 +37,12 @@ public final class Song implements Comparable<Song> {
     // Constructor for Song Class
     
     public Song(String title, String artist, String album, String length, String location, int id){
+        
+        if (title == null) {
+            Path path = Paths.get(location);
+            String fileName = path.getFileName().toString();
+            title = fileName.substring(0, fileName.lastIndexOf('.'));
+        }
         
         this.title = new SimpleStringProperty(title);
         this.artist = new SimpleStringProperty(artist);

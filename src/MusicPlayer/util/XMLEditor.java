@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javax.xml.parsers.DocumentBuilder;
@@ -157,6 +158,7 @@ public class XMLEditor {
                 newSong.appendChild(newSongDiscNumber);
                 newSong.appendChild(newSongPlayCount);
                 newSong.appendChild(newSongLocation);
+                
             
         }
             
@@ -189,11 +191,7 @@ public class XMLEditor {
         AudioHeader header = audioFile.getAudioHeader();
         
         String title = tag.getFirst(FieldKey.TITLE);
-        if (title.equals(null) || title.equals("") || title.equals("null")){
-            title = UNKNOWN_SONG;
-        }
-           
-        
+                   
         String artistTitle = tag.getFirst(FieldKey.ALBUM_ARTIST);
         if (artistTitle.equals(null) || artistTitle.equals("") || artistTitle.equals("null")){
             artistTitle = tag.getFirst(FieldKey.ARTIST);
@@ -212,8 +210,8 @@ public class XMLEditor {
         Duration length = Duration.ofSeconds(header.getTrackLength());
         long lengthSeconds = length.getSeconds();
         long lengthMinutes = length.toMinutes();
-        long actualSeconds = lengthSeconds - (60 * lengthMinutes);
-        String songLength = lengthMinutes + ":" + actualSeconds;
+        long seconds = length.getSeconds() % 60;
+        String songLength = (length.toMinutes() + ":" + (seconds < 10 ? "0" + seconds : seconds));
         
         String track = tag.getFirst(FieldKey.TRACK);
         String disc = tag.getFirst(FieldKey.DISC_NO);
@@ -223,9 +221,6 @@ public class XMLEditor {
         
         Song songToAdd = new Song(title, artist, album, songLength, location, id);
         songsToAdd.add(songToAdd);
-        
-        
-        
         }        
             catch (Exception ex){
                 ex.printStackTrace();
