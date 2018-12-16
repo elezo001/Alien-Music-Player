@@ -212,8 +212,6 @@ public class MusicPlayerController implements Initializable {
                     double sliderValue = timeSlider.getValue() / 100;
                     double seekTo = (duration * sliderValue);
                     MusicPlayer.mediaPlayer.seek(Duration.seconds(seekTo));
-                    
-                    
                 }
             }
         });

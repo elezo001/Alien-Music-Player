@@ -157,8 +157,9 @@ public class MusicPlayer extends Application {
         case: check if library !exist, create file otherwise.
         */
         
-        File libraryXML = new File("C:/Users/elezo/Documents/NetBeansProjects/MusicPlayer/src/MusicPlayer/util/resources/library.xml");
-        
+        //File libraryXML = new File("C:/Users/elezo/Documents/NetBeansProjects/MusicPlayer/src/MusicPlayer/util/resources/library.xml");
+        File libraryXML = new File("src/resources/library.xml");
+       
 
         if (libraryXML.exists()){
             System.out.print("library exists");

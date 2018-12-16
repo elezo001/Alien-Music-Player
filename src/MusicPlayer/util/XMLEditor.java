@@ -88,7 +88,7 @@ public class XMLEditor {
         try{
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-            Document doc = docBuilder.parse("C:/Users/elezo/Documents/NetBeansProjects/MusicPlayer/src/MusicPlayer/util/resources/library.xml");
+            Document doc = docBuilder.parse("src/resources/library.xml");
             
             NodeList nodeList = doc.getElementsByTagName("song");
             for(int i=0; i < nodeList.getLength(); i++){
@@ -120,7 +120,7 @@ public class XMLEditor {
         try {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-            Document doc = docBuilder.parse("C:/Users/elezo/Documents/NetBeansProjects/MusicPlayer/src/MusicPlayer/util/resources/library.xml");
+            Document doc = docBuilder.parse("src/resources/library.xml");
             
             XPathFactory xPathfactory = XPathFactory.newInstance();
             XPath xpath = xPathfactory.newXPath();
@@ -165,7 +165,7 @@ public class XMLEditor {
             transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             DOMSource source = new DOMSource(doc);
-            File xmlFile = new File("C:/Users/elezo/Documents/NetBeansProjects/MusicPlayer/src/MusicPlayer/util/resources/library.xml");
+            File xmlFile = new File("src/resources/library.xml");
             StreamResult result = new StreamResult(xmlFile);
             transformer.transform(source, result);
                 
@@ -208,15 +208,12 @@ public class XMLEditor {
         if (album.equals(null) || album.equals("") || album.equals("null")){
             album = UNKNOWN_ALBUM;
         }
-             
-        
-        Duration length = Duration.ofSeconds((long) header.getTrackLength());
+
+        Duration length = Duration.ofSeconds(header.getTrackLength());
         long lengthSeconds = length.getSeconds();
         long lengthMinutes = length.toMinutes();
-        String songLength = Long.toString(lengthMinutes) + ": " + Long.toString(lengthSeconds);
-        
-        
-        System.out.print(length.toString());
+        long actualSeconds = lengthSeconds - (60 * lengthMinutes);
+        String songLength = lengthMinutes + ":" + actualSeconds;
         
         String track = tag.getFirst(FieldKey.TRACK);
         String disc = tag.getFirst(FieldKey.DISC_NO);
