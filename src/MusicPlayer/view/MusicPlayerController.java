@@ -69,7 +69,7 @@ public class MusicPlayerController implements Initializable {
     @FXML private VBox playlistBox;
     @FXML private VBox dragBox;
     @FXML private ImageView nowPlayingArtwork;
-    @FXML private Label nowPlayingTitle;
+    @FXML private Label nowPlayingSong;
     @FXML private Label nowPlayingArtist;
     @FXML public Slider timeSlider;
     @FXML private Region frontSliderTrack;    
@@ -144,53 +144,6 @@ public class MusicPlayerController implements Initializable {
      e.consume();
     }
     
-    /*
-    @FXML 
-    private void pauseOnSliderDrag(){
-        MusicPlayer.pause();
-    }
-    */
-    
-    
-    /*
-    private void showMetadata(String songPath){
-        File file = new File(songPath);
-        try{
-        AudioFile audioFile = AudioFileIO.read(file);
-        Tag tag = audioFile.getTag();
-        AudioHeader header = audioFile.getAudioHeader();
-        
-        String title = tag.getFirst(FieldKey.TITLE);
-        String artistTitle = tag.getFirst(FieldKey.ALBUM_ARTIST);
-        if (artistTitle.equals(null) || artistTitle.equals("") || artistTitle.equals("null")){
-            artistTitle = tag.getFirst(FieldKey.ARTIST);
-        }
-        String artist = (artistTitle == null || artistTitle.equals("") || artistTitle.equals("null")) ? "" : artistTitle;
-        
-        String album = tag.getFirst(FieldKey.ALBUM);
-        
-        Duration length = Duration.ofSeconds((long) header.getTrackLength());
-        String track = tag.getFirst(FieldKey.TRACK);
-        String disc = tag.getFirst(FieldKey.DISC_NO);
-        
-        int playCount = 0;
-        String location = Paths.get(file.getAbsolutePath()).toString();
-        
-        System.out.print("Title: " + title + " Artist: " + artist + " Album: " + album + " Length: " + length + " Location: " + location);
-        
-        
-        }
-        catch(Exception ex){
-            ex.printStackTrace();
-        }
-        
-    }
-    */
-    
-
-
-
-
     /**
      * Initializes the controller class.
      */
@@ -232,6 +185,11 @@ public class MusicPlayerController implements Initializable {
                 Media media = new Media(songFile);
                 MusicPlayer.mediaPlayer = new MediaPlayer(media);
                 MusicPlayer.mediaPlayer.play();
+                
+                MusicPlayer.setNowPlaying(song);
+                nowPlayingArtist.setText(MusicPlayer.getPlayingSong().getArtist());
+                nowPlayingSong.setText(MusicPlayer.getPlayingSong().getTitle());
+                timeRemaining.setText(song.getLength());
             
                 //add listener for slider timer
                 MusicPlayer.mediaPlayer.currentTimeProperty().addListener(new ChangeListener<Duration>() {
@@ -239,8 +197,8 @@ public class MusicPlayerController implements Initializable {
                     public void changed(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue) {
                         double duration = MusicPlayer.mediaPlayer.getTotalDuration().toSeconds();
                         timeSlider.setValue((newValue.toSeconds() / duration) * 100.0);
-                        
-                        nowPlayingTitle.setText(Double.toString(timeSlider.getValue()));
+                        int s = (int) newValue.toSeconds();
+                        timePassed.setText(String.format("%02d:%02d", (s % 3600) / 60, (s % 60)));
                     }   
                 });
                 

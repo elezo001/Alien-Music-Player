@@ -103,6 +103,13 @@ public class MusicPlayer extends Application {
         }
                
 }
+    public static Song getPlayingSong(){
+        return nowPlaying;
+    }
+    
+    public static void setNowPlaying(Song song){
+        nowPlaying = song;
+    }
     
     public static boolean isPlaying() {
         return mediaPlayer != null && MediaPlayer.Status.PLAYING.equals(mediaPlayer.getStatus());
