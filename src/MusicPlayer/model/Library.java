@@ -31,35 +31,35 @@ public class Library {
     private static int maxProgress;
     
     
-    public void addSongToLibrary(Song song){
+    public static void addSongToLibrary(Song song){
         songs.add(song);
     }
     
-    public void addArtistToLibrary(Artist artist){
+    public static void addArtistToLibrary(Artist artist){
         artists.add(artist);
     }
     
-    public void addAlbumToLibrary(Album album){
+    public static void addAlbumToLibrary(Album album){
         albums.add(album);
     }
     
-    public void addPlaylistToLibrary(Playlist playlist){
+    public static void addPlaylistToLibrary(Playlist playlist){
         playlists.add(playlist);
     }
     
-    public ArrayList<Song> getSongs(){
-        return this.songs;
+    public static ArrayList<Song> getSongs(){
+        return songs;
     }
     
-    public ArrayList<Album> getAlbums(){
-        return this.albums;
+    public static ArrayList<Album> getAlbums(){
+        return albums;
     }
     
-    public ArrayList<Playlist> getPlaylists(){
-        return this.playlists;
+    public static ArrayList<Playlist> getPlaylists(){
+        return playlists;
     }
     
-    public ArrayList<Artist> getArtists(){
-        return this.artists;
+    public static ArrayList<Artist> getArtists(){
+        return artists;
     }
 }

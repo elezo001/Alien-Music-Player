@@ -358,6 +358,9 @@
                   <VBox fx:id="dragBox" onDragDropped="#handleFileDrop" onDragOver="#handleDragFileIntoBox" prefHeight="475.0" prefWidth="615.0">
                      <children>
                         <TableView fx:id="songView" fixedCellSize="25.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="475.0" prefWidth="615.0">
+                            <placeholder>
+                                <Label text=""/>
+                            </placeholder>
                           <columns>
                             <TableColumn fx:id="titleColumn" editable="false" prefWidth="150.0" text="Title" />
                             <TableColumn fx:id="artistColumn" prefWidth="150.0" text="Artist" />

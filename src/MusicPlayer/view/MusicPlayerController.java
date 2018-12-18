@@ -198,7 +198,7 @@ public class MusicPlayerController implements Initializable {
                         double duration = MusicPlayer.mediaPlayer.getTotalDuration().toSeconds();
                         timeSlider.setValue((newValue.toSeconds() / duration) * 100.0);
                         int s = (int) newValue.toSeconds();
-                        timePassed.setText(String.format("%02d:%02d", (s % 3600) / 60, (s % 60)));
+                        timePassed.setText(String.format("%2d:%02d", (s % 3600) / 60, (s % 60)));
                     }   
                 });
                 

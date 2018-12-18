@@ -54,7 +54,7 @@ public class XMLEditor {
     public static String UNKNOWN_ARTIST = "Unknown Artist";
     public static String UNKNOWN_ALBUM = "Unknown Album";
     
-    int currentSongId = 0;
+    public static int lastIdAssigned = 0;
     
     
     private static ArrayList<Song> songsToAdd = new ArrayList<>();
@@ -129,6 +129,10 @@ public class XMLEditor {
             Node songsNode = ((NodeList) expr.evaluate(doc, XPathConstants.NODESET)).item(0);
             
             for (Song song : songsToAdd) {
+                //Library.addSongToLibrary(song);
+                //Library.addArtistToLibrary();
+                //Library.addAlbumToLibrary();
+                
                 Element newSong = doc.createElement("song");
                 Element newSongId = doc.createElement("id");
                 Element newSongTitle = doc.createElement("title");
@@ -182,7 +186,6 @@ public class XMLEditor {
     
     public static void createSongObject() {
         
-        int id = 0;
         
         for(File songFile : songFilesToAdd){
         try{
@@ -218,6 +221,9 @@ public class XMLEditor {
         
         int playCount = 0;
         String location = Paths.get(songFile.getAbsolutePath()).toString();
+        
+        int id = lastIdAssigned;
+        lastIdAssigned++;
         
         Song songToAdd = new Song(title, artist, album, songLength, location, id);
         songsToAdd.add(songToAdd);
