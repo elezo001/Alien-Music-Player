@@ -36,7 +36,7 @@ public final class Song implements Comparable<Song> {
     
     // Constructor for Song Class
     
-    public Song(String title, String artist, String album, String length, String location, int id){
+    public Song(String title, String artist, String album, String length, String location, int id, int playCount){
         
         if (title == null) {
             Path path = Paths.get(location);
@@ -51,13 +51,13 @@ public final class Song implements Comparable<Song> {
         this.length = new SimpleStringProperty(length);
         this.location = location;
         
-        this.playCount = 0;
+        this.playCount = playCount;
         
         
         
     }
     
-        public int getId() {
+    public int getId() {
         return this.id;
     }
 

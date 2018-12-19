@@ -129,7 +129,7 @@ public class XMLEditor {
             Node songsNode = ((NodeList) expr.evaluate(doc, XPathConstants.NODESET)).item(0);
             
             for (Song song : songsToAdd) {
-                //Library.addSongToLibrary(song);
+                Library.addSongToLibrary(song);
                 //Library.addArtistToLibrary();
                 //Library.addAlbumToLibrary();
                 
@@ -225,7 +225,7 @@ public class XMLEditor {
         int id = lastIdAssigned;
         lastIdAssigned++;
         
-        Song songToAdd = new Song(title, artist, album, songLength, location, id);
+        Song songToAdd = new Song(title, artist, album, songLength, location, id, playCount);
         songsToAdd.add(songToAdd);
         }        
             catch (Exception ex){

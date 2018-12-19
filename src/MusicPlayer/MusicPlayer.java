@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -49,7 +50,7 @@ public class MusicPlayer extends Application {
     private static MusicPlayerController mainController;
     public static MediaPlayer mediaPlayer;
     private static Media media;
-    private static ArrayList<Song> nowPlayingList;
+    private static ArrayList<Song> currentPlayingList;
     private static int nowPlayingIndex;
     private static Song nowPlaying;
     private static Timer timer;
@@ -109,6 +110,11 @@ public class MusicPlayer extends Application {
     
     public static void setNowPlaying(Song song){
         nowPlaying = song;
+        nowPlayingIndex = song.getId();
+    }
+    
+    public static void setCurrentPlayingList(List<Song> list){
+        currentPlayingList = new ArrayList<>(list);
     }
     
     public static boolean isPlaying() {
@@ -119,6 +125,31 @@ public class MusicPlayer extends Application {
     public static void pause(){
         if (isPlaying()){
             mediaPlayer.pause();           
+        }
+    }
+    
+    //Plays next song in list
+    public static void next(){
+        if(nowPlayingIndex < currentPlayingList.size() - 1){
+            Song songToPlay = currentPlayingList.get(nowPlayingIndex + 1);
+            String songFile = new File(songToPlay.getLocation()).toURI().toString();
+            
+            Media media = new Media(songFile);
+            MusicPlayer.mediaPlayer = new MediaPlayer(media);
+            MusicPlayer.mediaPlayer.play();
+                
+            MusicPlayer.setNowPlaying(songToPlay);
+        }
+        //Play song at top of list, since were at the end
+        else{
+            Song songToPlay = currentPlayingList.get(0);
+            String songFile = new File(songToPlay.getLocation()).toURI().toString();
+            
+            Media media = new Media(songFile);
+            MusicPlayer.mediaPlayer = new MediaPlayer(media);
+            MusicPlayer.mediaPlayer.play();
+                
+            MusicPlayer.setNowPlaying(songToPlay);
         }
     }
 
@@ -188,7 +219,9 @@ public class MusicPlayer extends Application {
             rootElement.appendChild(songs);
             Element playlists = doc.createElement("playlists");
             rootElement.appendChild(playlists);
-            
+            Element currentPlayingList = doc.createElement("currentPlayingList");
+            rootElement.appendChild(currentPlayingList);
+                               
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);

@@ -81,6 +81,7 @@ public class MusicPlayerController implements Initializable {
 
     @FXML private Pane playButton;
     @FXML private Pane pauseButton;
+    @FXML private Pane nextButton;
     @FXML private Pane loopButton;
     @FXML private Pane shuffleButton;
     @FXML private HBox controlBox;
@@ -88,7 +89,6 @@ public class MusicPlayerController implements Initializable {
     @FXML private TextField searchBox;
     
     @FXML private Label dropped;
-    @FXML private ListView<String> songList = new ListView<String>();
     @FXML private TableView<Song> songView = new TableView<Song>();
     @FXML private TableColumn<Song, String> titleColumn;
     @FXML private TableColumn<Song, String> artistColumn;
@@ -117,6 +117,7 @@ public class MusicPlayerController implements Initializable {
             XMLEditor.setFilesToAdd(songFileList);
             XMLEditor.createSongObject();
             ObservableList<Song> list = XMLEditor.getObservableSongs();
+            MusicPlayer.setCurrentPlayingList(list);
             XMLEditor.clearSongsToAdd();
         for(int i=0; i<fileStrings.size(); i++){
             Song song = list.get(i);
@@ -143,6 +144,7 @@ public class MusicPlayerController implements Initializable {
      e.setDropCompleted(success);
      e.consume();
     }
+    
     
     /**
      * Initializes the controller class.
@@ -216,6 +218,10 @@ public class MusicPlayerController implements Initializable {
         
         playButton.setOnMouseClicked( x -> {
             MusicPlayer.playPause();
+        });
+        
+        nextButton.setOnMouseClicked( x -> {
+            MusicPlayer.next();
         });
     
     }    

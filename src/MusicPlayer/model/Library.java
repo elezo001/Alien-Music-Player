@@ -24,10 +24,10 @@ public class Library {
     private static final String PLAYDATE = "playDate";
     private static final String LOCATION = "location";
 
-    private static ArrayList<Song> songs;
-    private static ArrayList<Artist> artists;
-    private static ArrayList<Album> albums;
-    private static ArrayList<Playlist> playlists;
+    private static ArrayList<Song> songs = new ArrayList<Song>();
+    private static ArrayList<Artist> artists = new ArrayList<Artist>();
+    private static ArrayList<Album> albums = new ArrayList<Album>();
+    private static ArrayList<Playlist> playlists = new ArrayList<Playlist>();
     private static int maxProgress;
     
     
@@ -49,6 +49,10 @@ public class Library {
     
     public static ArrayList<Song> getSongs(){
         return songs;
+    }
+    
+    public static Song getSong(int id){
+        return songs.get(id);
     }
     
     public static ArrayList<Album> getAlbums(){
