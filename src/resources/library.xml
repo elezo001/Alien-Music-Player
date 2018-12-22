@@ -178,6 +178,18 @@
             <playCount>0</playCount>
             <location>C:\Users\elezo\Music\Drake - Nothing Was The Same (Deluxe Edition) 2013 320kbps CBR MP3 [VX] [P2PDL]\16 - Drake - The Motion (Feat. Sampha).mp3</location>
         </song>
+    <song>
+            <id>16</id>
+            <title>Look At Me!</title>
+            <artist>XXXTENTACION</artist>
+            <album>Look At Me! - Single</album>
+            <length>2:06</length>
+            <trackNumber/>
+            <discNumber/>
+            <playCount>0</playCount>
+            <location>C:\Users\elezo\Music\01 Look At Me!.m4a</location>
+        </song>
     </songs>
     <playlists/>
+    <currentPlayingList/>
 </library>

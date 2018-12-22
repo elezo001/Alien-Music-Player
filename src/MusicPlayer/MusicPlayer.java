@@ -102,6 +102,7 @@ public class MusicPlayer extends Application {
             ex.printStackTrace();
             System.exit(0);
         }
+        
                
 }
     public static Song getPlayingSong(){

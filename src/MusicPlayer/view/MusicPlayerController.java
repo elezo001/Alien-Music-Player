@@ -6,6 +6,7 @@
 package MusicPlayer.view;
 
 import MusicPlayer.MusicPlayer;
+import MusicPlayer.model.Library;
 import MusicPlayer.model.Song;
 import MusicPlayer.util.XMLEditor;
 import java.io.File;
@@ -140,9 +141,15 @@ public class MusicPlayerController implements Initializable {
                 songView.getItems().add(song);
                 }
             success = true;
+            MusicPlayer.setCurrentPlayingList(Library.getObservableSongs());
         }
      e.setDropCompleted(success);
      e.consume();
+    }
+    
+    @FXML
+    private void updateSongs(){
+        
     }
     
     
@@ -170,6 +177,7 @@ public class MusicPlayerController implements Initializable {
                 }
             }
         });
+        
 
         songView.setRowFactory(x -> {
             TableRow<Song> row = new TableRow<>();
@@ -194,6 +202,7 @@ public class MusicPlayerController implements Initializable {
                 timeRemaining.setText(song.getLength());
             
                 //add listener for slider timer
+                
                 MusicPlayer.mediaPlayer.currentTimeProperty().addListener(new ChangeListener<Duration>() {
                     @Override
                     public void changed(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue) {
@@ -211,7 +220,7 @@ public class MusicPlayerController implements Initializable {
             });
             return row;
         });
-        
+
         pauseButton.setOnMouseClicked( x -> {
             MusicPlayer.pause();
         });

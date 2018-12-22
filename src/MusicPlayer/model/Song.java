@@ -38,11 +38,13 @@ public final class Song implements Comparable<Song> {
     
     public Song(String title, String artist, String album, String length, String location, int id, int playCount){
         
+        
         if (title == null) {
             Path path = Paths.get(location);
             String fileName = path.getFileName().toString();
             title = fileName.substring(0, fileName.lastIndexOf('.'));
         }
+
         
         this.title = new SimpleStringProperty(title);
         this.artist = new SimpleStringProperty(artist);

@@ -6,6 +6,8 @@
 package MusicPlayer.model;
 
 import java.util.ArrayList;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 /**
  *
@@ -53,6 +55,10 @@ public class Library {
     
     public static Song getSong(int id){
         return songs.get(id);
+    }
+    
+    public static ObservableList<Song> getObservableSongs() {
+        return FXCollections.observableArrayList(songs);
     }
     
     public static ArrayList<Album> getAlbums(){
