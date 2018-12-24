@@ -61,7 +61,7 @@ public class XMLEditor {
     private static ArrayList<File> songFilesToAdd = new ArrayList();
     private static ArrayList<String> xmlSongFileNames = new ArrayList<>();
     
-    public static ObservableList<Song> getObservableSongs() {
+    public static ObservableList<Song> getObservableSongsToAdd() {
         return FXCollections.observableArrayList(songsToAdd);
     }
     
@@ -129,6 +129,7 @@ public class XMLEditor {
             Node songsNode = ((NodeList) expr.evaluate(doc, XPathConstants.NODESET)).item(0);
             
             for (Song song : songsToAdd) {
+                //add song to master library
                 Library.addSongToLibrary(song);
                 //Library.addArtistToLibrary();
                 //Library.addAlbumToLibrary();

@@ -95,6 +95,7 @@ public class MusicPlayer extends Application {
             stage.setScene(scene);
             //stage.setMaximized(true);
             stage.show();
+            
 
         
         } 
@@ -129,8 +130,15 @@ public class MusicPlayer extends Application {
         }
     }
     
+    public static Stage getStage(){
+        return stage;
+    }
+    
     //Plays next song in list
     public static void next(){
+        
+        mediaPlayer.stop();
+        
         if(nowPlayingIndex < currentPlayingList.size() - 1){
             Song songToPlay = currentPlayingList.get(nowPlayingIndex + 1);
             String songFile = new File(songToPlay.getLocation()).toURI().toString();
@@ -140,6 +148,8 @@ public class MusicPlayer extends Application {
             MusicPlayer.mediaPlayer.play();
                 
             MusicPlayer.setNowPlaying(songToPlay);
+            
+            addProgressListener();
         }
         //Play song at top of list, since were at the end
         else{
@@ -151,6 +161,8 @@ public class MusicPlayer extends Application {
             MusicPlayer.mediaPlayer.play();
                 
             MusicPlayer.setNowPlaying(songToPlay);
+            
+            addProgressListener();
         }
     }
 
@@ -186,6 +198,18 @@ public class MusicPlayer extends Application {
     
     public static MusicPlayerController getMainController(){
         return mainController;
+    }
+    
+    public static void addProgressListener(){
+        MusicPlayer.mediaPlayer.currentTimeProperty().addListener(new ChangeListener<Duration>() {
+            @Override
+                public void changed(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue) {
+                        double duration = MusicPlayer.mediaPlayer.getTotalDuration().toSeconds();
+                        mainController.timeSlider.setValue((newValue.toSeconds() / duration) * 100.0);
+                        int s = (int) newValue.toSeconds();
+                        mainController.timePassed.setText(String.format("%2d:%02d", (s % 3600) / 60, (s % 60)));
+                    }   
+                });
     }
     
 

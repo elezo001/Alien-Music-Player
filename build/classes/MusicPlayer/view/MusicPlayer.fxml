@@ -54,7 +54,7 @@
                   <Insets left="10.0" right="10.0" />
                </VBox.margin>
             </Separator>
-            <HBox id="artists" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="50.0" prefHeight="50.0" prefWidth="250.0" styleClass="sideBarItemSelected">
+            <HBox id="artists" fx:id="artistsButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="50.0" prefHeight="50.0" prefWidth="250.0" styleClass="sideBarItemSelected">
                <children>
                   <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="30.0" styleClass="iconContainer">
                      <children>

@@ -10,6 +10,7 @@ import MusicPlayer.model.Library;
 import MusicPlayer.model.Song;
 import MusicPlayer.util.XMLEditor;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Paths;
 import javafx.util.Duration;
@@ -19,15 +20,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
@@ -45,6 +51,7 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
@@ -74,11 +81,13 @@ public class MusicPlayerController implements Initializable {
     @FXML private Label nowPlayingArtist;
     @FXML public Slider timeSlider;
     @FXML private Region frontSliderTrack;    
-    @FXML private Label timePassed;
+    @FXML public Label timePassed;
     @FXML private Label timeRemaining;
 
     @FXML private HBox letterBox;
     @FXML private Separator letterSeparator;
+    
+    @FXML private HBox artistsButton;
 
     @FXML private Pane playButton;
     @FXML private Pane pauseButton;
@@ -117,7 +126,7 @@ public class MusicPlayerController implements Initializable {
         }
             XMLEditor.setFilesToAdd(songFileList);
             XMLEditor.createSongObject();
-            ObservableList<Song> list = XMLEditor.getObservableSongs();
+            ObservableList<Song> list = XMLEditor.getObservableSongsToAdd();
             MusicPlayer.setCurrentPlayingList(list);
             XMLEditor.clearSongsToAdd();
         for(int i=0; i<fileStrings.size(); i++){
@@ -134,7 +143,7 @@ public class MusicPlayerController implements Initializable {
             List<File> filesToAdd = db.getFiles();
             XMLEditor.setFilesToAdd(filesToAdd);
             XMLEditor.addSongToXml();
-            ObservableList<Song> list = XMLEditor.getObservableSongs();
+            ObservableList<Song> list = XMLEditor.getObservableSongsToAdd();
             XMLEditor.clearSongsToAdd();
             for(int i=0; i < list.size(); i++){
                 Song song = list.get(i);
@@ -147,11 +156,16 @@ public class MusicPlayerController implements Initializable {
      e.consume();
     }
     
-    @FXML
-    private void updateSongs(){
+    @FXML private void loadView(String viewName) throws IOException{
+        FXMLLoader loader = FXMLLoader.load(getClass().getResource(viewName));
+        BorderPane view = loader.load();
+        
+        Scene newScene = new Scene(view);
+        
+        MusicPlayer.getStage().setScene(newScene);
         
     }
-    
+
     
     /**
      * Initializes the controller class.
@@ -165,6 +179,10 @@ public class MusicPlayerController implements Initializable {
         artistColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("artist"));
         albumColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("album"));
         lengthColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("length"));
+        
+
+
+
         
         timeSlider.valueChangingProperty().addListener(new ChangeListener<Boolean>() {
             @Override
@@ -181,6 +199,7 @@ public class MusicPlayerController implements Initializable {
 
         songView.setRowFactory(x -> {
             TableRow<Song> row = new TableRow<>();
+            
             row.setOnMouseClicked(event -> {
              if (! row.isEmpty() && event.getButton()==MouseButton.PRIMARY 
              && event.getClickCount() == 2){
@@ -202,16 +221,8 @@ public class MusicPlayerController implements Initializable {
                 timeRemaining.setText(song.getLength());
             
                 //add listener for slider timer
-                
-                MusicPlayer.mediaPlayer.currentTimeProperty().addListener(new ChangeListener<Duration>() {
-                    @Override
-                    public void changed(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue) {
-                        double duration = MusicPlayer.mediaPlayer.getTotalDuration().toSeconds();
-                        timeSlider.setValue((newValue.toSeconds() / duration) * 100.0);
-                        int s = (int) newValue.toSeconds();
-                        timePassed.setText(String.format("%2d:%02d", (s % 3600) / 60, (s % 60)));
-                    }   
-                });
+                MusicPlayer.addProgressListener();
+
                 
             }
             catch(Exception exception){
@@ -231,7 +242,21 @@ public class MusicPlayerController implements Initializable {
         
         nextButton.setOnMouseClicked( x -> {
             MusicPlayer.next();
+            nowPlayingArtist.setText(MusicPlayer.getPlayingSong().getArtist());
+            nowPlayingSong.setText(MusicPlayer.getPlayingSong().getTitle());
+            timeRemaining.setText(MusicPlayer.getPlayingSong().getLength());
+            
         });
+        
+        
+        artistsButton.setOnMouseClicked(x -> {
+            try {
+                loadView("/Musicplayer/View/Artists.FXML");
+            } catch (IOException ex) {
+                Logger.getLogger(MusicPlayerController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        
     
     }    
     

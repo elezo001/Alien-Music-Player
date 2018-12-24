@@ -8,10 +8,11 @@
             <file>file:/C:/Users/elezo/Documents/NetBeansProjects/MusicPlayer/src/MusicPlayer/model/Artist.java</file>
             <file>file:/C:/Users/elezo/Documents/NetBeansProjects/MusicPlayer/src/MusicPlayer/model/Song.java</file>
             <file>file:/C:/Users/elezo/Documents/NetBeansProjects/MusicPlayer/src/MusicPlayer/model/Album.java</file>
+            <file>file:/C:/Users/elezo/Documents/NetBeansProjects/MusicPlayer/src/MusicPlayer/view/Artists.fxml</file>
+            <file>file:/C:/Users/elezo/Documents/NetBeansProjects/MusicPlayer/src/MusicPlayer/view/ArtistsController.java</file>
             <file>file:/C:/Users/elezo/Documents/NetBeansProjects/MusicPlayer/src/MusicPlayer/view/MusicPlayer.fxml</file>
             <file>file:/C:/Users/elezo/Documents/NetBeansProjects/MusicPlayer/src/MusicPlayer/view/MusicPlayerController.java</file>
             <file>file:/C:/Users/elezo/Documents/NetBeansProjects/MusicPlayer/src/MusicPlayer/model/Library.java</file>
-            <file>file:/C:/Users/elezo/Documents/NetBeansProjects/MusicPlayer/src/resources/library.xml</file>
             <file>file:/C:/Users/elezo/Documents/NetBeansProjects/MusicPlayer/src/MusicPlayer/model/Playlist.java</file>
         </group>
     </open-files>
