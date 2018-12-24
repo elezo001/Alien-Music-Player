@@ -77,12 +77,12 @@ public class MusicPlayerController implements Initializable {
     @FXML private VBox playlistBox;
     @FXML private VBox dragBox;
     @FXML private ImageView nowPlayingArtwork;
-    @FXML private Label nowPlayingSong;
-    @FXML private Label nowPlayingArtist;
+    @FXML public Label nowPlayingSong;
+    @FXML public Label nowPlayingArtist;
     @FXML public Slider timeSlider;
     @FXML private Region frontSliderTrack;    
     @FXML public Label timePassed;
-    @FXML private Label timeRemaining;
+    @FXML public Label timeRemaining;
 
     @FXML private HBox letterBox;
     @FXML private Separator letterSeparator;
@@ -216,6 +216,15 @@ public class MusicPlayerController implements Initializable {
                 MusicPlayer.mediaPlayer.play();
                 
                 MusicPlayer.setNowPlaying(song);
+                
+                MusicPlayer.mediaPlayer.setOnEndOfMedia(new Runnable() {
+                    @Override
+                    public void run() {
+                        MusicPlayer.next();
+                    }
+                });
+
+                
                 nowPlayingArtist.setText(MusicPlayer.getPlayingSong().getArtist());
                 nowPlayingSong.setText(MusicPlayer.getPlayingSong().getTitle());
                 timeRemaining.setText(song.getLength());
@@ -241,11 +250,7 @@ public class MusicPlayerController implements Initializable {
         });
         
         nextButton.setOnMouseClicked( x -> {
-            MusicPlayer.next();
-            nowPlayingArtist.setText(MusicPlayer.getPlayingSong().getArtist());
-            nowPlayingSong.setText(MusicPlayer.getPlayingSong().getTitle());
-            timeRemaining.setText(MusicPlayer.getPlayingSong().getLength());
-            
+            MusicPlayer.next();            
         });
         
         

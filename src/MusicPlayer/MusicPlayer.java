@@ -77,17 +77,6 @@ public class MusicPlayer extends Application {
             
             //initialize controller and give access to main application
             mainController = mainLoader.getController();
-//            
-//            new Thread(){
-//                @Override
-//                public void run(){
-//                    final URL lookatmefile = getClass().getResource("/MusicPlayer/util/Music/01 Look At Me!.m4a");
-//                    media = new Media(lookatmefile.toString());
-//                    mediaPlayer = new MediaPlayer(media);
-//                    mediaPlayer.play();
-//                }
-//            }.start();
-            
             
 
             // Shows the scene containing the layout.
@@ -164,6 +153,9 @@ public class MusicPlayer extends Application {
             
             addProgressListener();
         }
+            mainController.nowPlayingArtist.setText(MusicPlayer.getPlayingSong().getArtist());
+            mainController.nowPlayingSong.setText(MusicPlayer.getPlayingSong().getTitle());
+            mainController.timeRemaining.setText(MusicPlayer.getPlayingSong().getLength());
     }
 
     
