@@ -39,7 +39,7 @@ public final class Song implements Comparable<Song> {
     public Song(String title, String artist, String album, String length, String location, int id, int playCount){
         
         
-        if (title == null) {
+        if (title == null || title == "") {
             Path path = Paths.get(location);
             String fileName = path.getFileName().toString();
             title = fileName.substring(0, fileName.lastIndexOf('.'));
