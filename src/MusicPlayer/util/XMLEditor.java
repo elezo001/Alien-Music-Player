@@ -130,7 +130,7 @@ public class XMLEditor {
             
             for (Song song : songsToAdd) {
                 //add song to master library
-                Library.addSongToLibrary(song);
+                //Library.addSongToLibrary(song);
                 //Library.addArtistToLibrary();
                 //Library.addAlbumToLibrary();
                 
@@ -228,6 +228,7 @@ public class XMLEditor {
         
         Song songToAdd = new Song(title, artist, album, songLength, location, id, playCount);
         songsToAdd.add(songToAdd);
+        Library.addSongToLibrary(songToAdd);
         }        
             catch (Exception ex){
                 ex.printStackTrace();

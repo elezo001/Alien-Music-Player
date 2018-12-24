@@ -35,7 +35,7 @@
             <playCount>0</playCount>
             <location>C:\Users\elezo\Music\Drake - Nothing Was The Same (Deluxe Edition) 2013 320kbps CBR MP3 [VX] [P2PDL]\03 - Drake - Started From The Bottom.mp3</location>
         </song>
-        <song>
+    <song>
             <id>3</id>
             <title>Wu-Tang Forever</title>
             <artist>Drake</artist>
@@ -46,7 +46,7 @@
             <playCount>0</playCount>
             <location>C:\Users\elezo\Music\Drake - Nothing Was The Same (Deluxe Edition) 2013 320kbps CBR MP3 [VX] [P2PDL]\04 - Drake - Wu-Tang Forever.mp3</location>
         </song>
-        <song>
+    <song>
             <id>4</id>
             <title>Own It</title>
             <artist>Drake</artist>
@@ -57,7 +57,7 @@
             <playCount>0</playCount>
             <location>C:\Users\elezo\Music\Drake - Nothing Was The Same (Deluxe Edition) 2013 320kbps CBR MP3 [VX] [P2PDL]\05 - Drake - Own It.mp3</location>
         </song>
-        <song>
+    <song>
             <id>5</id>
             <title>Worst Behavior</title>
             <artist>Drake</artist>
@@ -68,7 +68,7 @@
             <playCount>0</playCount>
             <location>C:\Users\elezo\Music\Drake - Nothing Was The Same (Deluxe Edition) 2013 320kbps CBR MP3 [VX] [P2PDL]\06 - Drake - Worst Behavior.mp3</location>
         </song>
-        <song>
+    <song>
             <id>6</id>
             <title>From Time (Feat. Jhene Aiko)</title>
             <artist>Drake</artist>
@@ -188,17 +188,6 @@
             <discNumber/>
             <playCount>0</playCount>
             <location>C:\Users\elezo\Music\01 Look At Me!.m4a</location>
-        </song>
-    <song>
-            <id>17</id>
-            <title>LUCKI - DONT YOU LOVE ME</title>
-            <artist>Unknown Artist</artist>
-            <album>Unknown Album</album>
-            <length>1:29</length>
-            <trackNumber/>
-            <discNumber/>
-            <playCount>0</playCount>
-            <location>C:\Users\elezo\Music\LUCKI - DONT YOU LOVE ME.mp3</location>
         </song>
     </songs>
     <playlists/>

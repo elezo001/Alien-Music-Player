@@ -108,6 +108,12 @@ public class MusicPlayer extends Application {
         currentPlayingList = new ArrayList<>(list);
     }
     
+    public static void printCurrentPlayingList(){
+        for(int i=0; i<currentPlayingList.size(); i++){
+            System.out.print(currentPlayingList.get(i).getTitle() + System.lineSeparator());
+        }
+    }
+    
     public static boolean isPlaying() {
         return mediaPlayer != null && MediaPlayer.Status.PLAYING.equals(mediaPlayer.getStatus());
     }

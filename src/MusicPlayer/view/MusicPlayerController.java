@@ -133,6 +133,7 @@ public class MusicPlayerController implements Initializable {
             Song song = list.get(i);
             songView.getItems().add(song);
         }
+        MusicPlayer.printCurrentPlayingList();
     }
     
     @FXML
@@ -152,8 +153,10 @@ public class MusicPlayerController implements Initializable {
             success = true;
             MusicPlayer.setCurrentPlayingList(Library.getObservableSongs());
         }
+        
      e.setDropCompleted(success);
      e.consume();
+     MusicPlayer.printCurrentPlayingList();
     }
     
     @FXML private void loadView(String viewName) throws IOException{
