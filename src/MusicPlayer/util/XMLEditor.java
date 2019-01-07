@@ -129,10 +129,7 @@ public class XMLEditor {
             Node songsNode = ((NodeList) expr.evaluate(doc, XPathConstants.NODESET)).item(0);
             
             for (Song song : songsToAdd) {
-                //add song to master library
-                //Library.addSongToLibrary(song);
-                //Library.addArtistToLibrary();
-                //Library.addAlbumToLibrary();
+
                 
                 Element newSong = doc.createElement("song");
                 Element newSongId = doc.createElement("id");

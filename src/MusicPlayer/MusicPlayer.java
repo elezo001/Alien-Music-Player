@@ -68,6 +68,7 @@ public class MusicPlayer extends Application {
         
         MusicPlayer.stage = stage;
         MusicPlayer.stage.setTitle("Alien Music Player");
+        //checks if library XML database exists, if not it creates one.
         checkLibraryXML();
                         
         try {

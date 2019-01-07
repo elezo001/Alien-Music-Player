@@ -59,6 +59,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaPlayer.Status;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.audio.AudioHeader;
@@ -83,6 +85,9 @@ public class MusicPlayerController implements Initializable {
     @FXML private Region frontSliderTrack;    
     @FXML public Label timePassed;
     @FXML public Label timeRemaining;
+    
+    private Stage volumePopup;
+    private VolumePopupController volumePopupController;
 
     @FXML private HBox letterBox;
     @FXML private Separator letterSeparator;
@@ -136,6 +141,7 @@ public class MusicPlayerController implements Initializable {
         MusicPlayer.printCurrentPlayingList();
     }
     
+
     @FXML
     private void handleFileDrop(DragEvent e){
         Dragboard db = e.getDragboard();
@@ -168,6 +174,39 @@ public class MusicPlayerController implements Initializable {
         MusicPlayer.getStage().setScene(newScene);
         
     }
+    
+    private void createVolumePopup(){
+        try{
+        Stage stage = MusicPlayer.getStage();
+        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/MusicPlayer/View/VolumePopup.fxml"));
+        VBox view = loader.load();
+        volumePopupController = loader.getController();
+        Stage popup = new Stage();
+        popup.initStyle(StageStyle.UNDECORATED);
+        popup.setScene(new Scene(view));
+        popup.initOwner(stage);
+
+        
+        
+        volumePopup = popup;
+        
+    }   
+        catch (IOException ex) {
+            Logger.getLogger(MusicPlayerController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+        
+    public void volumeClick() {
+    	if (!volumePopup.isShowing()) {
+    		Stage stage = MusicPlayer.getStage();
+    		volumePopup.setX(stage.getX() + stage.getWidth() - 30);
+        	volumePopup.setY(stage.getY() + stage.getHeight() - 360);
+    		volumePopup.show();
+    	}
+        else{
+            volumePopup.hide();
+        }
+    }
 
     
     /**
@@ -183,7 +222,7 @@ public class MusicPlayerController implements Initializable {
         albumColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("album"));
         lengthColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("length"));
         
-
+        createVolumePopup();
 
 
         
@@ -255,8 +294,7 @@ public class MusicPlayerController implements Initializable {
         nextButton.setOnMouseClicked( x -> {
             MusicPlayer.next();            
         });
-        
-        
+                        
         artistsButton.setOnMouseClicked(x -> {
             try {
                 loadView("/Musicplayer/View/Artists.FXML");
