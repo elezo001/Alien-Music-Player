@@ -5,11 +5,15 @@
  */
 package MusicPlayer.view;
 
+import MusicPlayer.MusicPlayer;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Slider;
+import javafx.util.Duration;
 
 /**
  * FXML Controller class
@@ -25,7 +29,16 @@ public class VolumePopupController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        
+         volumeSlider.valueChangingProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> obs, Boolean wasChanging, Boolean isChanging){
+                if (wasChanging){
+                    double volume = volumeSlider.getValue() / 100; 
+                    MusicPlayer.mediaPlayer.setVolume(volume);
+                }
+            }
+        });
     }
 
     public Slider getSlider(){
