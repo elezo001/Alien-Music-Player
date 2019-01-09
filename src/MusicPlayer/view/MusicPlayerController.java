@@ -185,10 +185,27 @@ public class MusicPlayerController implements Initializable {
         popup.initStyle(StageStyle.UNDECORATED);
         popup.setScene(new Scene(view));
         popup.initOwner(stage);
-
-        
         
         volumePopup = popup;
+        
+        stage.widthProperty().addListener(new ChangeListener<Number>(){
+            @Override
+            public void changed(ObservableValue<? extends Number> obs, Number oldVal, Number newVal){
+                if ((newVal.intValue() > oldVal.intValue()) || (newVal.intValue() < oldVal.intValue())){
+                volumePopup.hide();
+                }
+            }
+        });
+        
+        stage.heightProperty().addListener(new ChangeListener<Number>(){
+            @Override
+            public void changed(ObservableValue<? extends Number> obs, Number oldVal, Number newVal){
+                if ((newVal.intValue() > oldVal.intValue()) || (newVal.intValue() < oldVal.intValue())){
+                volumePopup.hide();
+                }
+            }
+        });
+        
         
     }   
         catch (IOException ex) {
