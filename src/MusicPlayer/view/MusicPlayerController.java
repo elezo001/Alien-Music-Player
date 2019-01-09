@@ -165,13 +165,15 @@ public class MusicPlayerController implements Initializable {
      MusicPlayer.printCurrentPlayingList();
     }
     
-    @FXML private void loadView(String viewName) throws IOException{
-        FXMLLoader loader = FXMLLoader.load(getClass().getResource(viewName));
+    private void loadView(String viewName) throws IOException{
+        Stage stage = MusicPlayer.getStage();
+        FXMLLoader loader = new FXMLLoader(this.getClass().getResource(viewName));
         BorderPane view = loader.load();
         
-        Scene newScene = new Scene(view);
+        stage.setScene(new Scene(view));
+        stage.show();
         
-        MusicPlayer.getStage().setScene(newScene);
+
         
     }
     
@@ -187,6 +189,26 @@ public class MusicPlayerController implements Initializable {
         popup.initOwner(stage);
         
         volumePopup = popup;
+        
+        stage.xProperty().addListener(new ChangeListener<Number>(){
+            @Override
+            public void changed(ObservableValue<? extends Number> obs, Number oldVal, Number newVal){
+                if ((newVal.intValue() > oldVal.intValue()) || (newVal.intValue() < oldVal.intValue())){
+                volumePopup.hide();
+                }
+            }
+        });
+        
+        stage.yProperty().addListener(new ChangeListener<Number>(){
+            @Override
+            public void changed(ObservableValue<? extends Number> obs, Number oldVal, Number newVal){
+                if ((newVal.intValue() > oldVal.intValue()) || (newVal.intValue() < oldVal.intValue())){
+                volumePopup.hide();
+                }
+            }
+        });
+        
+        
         
         stage.widthProperty().addListener(new ChangeListener<Number>(){
             @Override
